@@ -15,10 +15,17 @@ DWORD GetPID(const char* windowName)
 	return *pid;
 }
 
-int main()
+int main(int argc, char **argv)
 {
-	const char* dllPath = "";
-	const char* windowName = "AssaultCube";
+	if (argc < 3)
+	{
+		std::cout << "Usage: DLLjector.exe \"[window name]\" [path of dll]" << std::endl;
+		return 1;
+	}
+
+	const char* windowName = argv[1];
+	const char* dllPath = argv[2];
+
 	const DWORD pid = GetPID(windowName);
 
 	if (!pid)
@@ -43,7 +50,7 @@ int main()
 
 		// Inject dll path into allocated mem
 		WriteProcessMemory(hProc, allocAddr, dllPath, strlen(dllPath) + 1, nullptr);
-		std::cout << "Wrote " << strlen(dllPath) + 1 << " bytes of " << dllPath << " into allocated address" << std::endl;
+		std::cout << "Wrote " << strlen(dllPath) + 1 << " bytes into allocated address" << std::endl;
 
 		// Call LoadLibrary on injected dll and create child thread
 		// from parent process, running the injected DLL as a result
