@@ -5,7 +5,7 @@
 DWORD GetPID(const char* windowName)
 {
 	// Find pid of process through window name
-	HWND windowHandle = FindWindow(NULL, windowName);
+	HWND windowHandle = FindWindow(NULL, (LPCWSTR)windowName);
 
 	DWORD* pid = new DWORD;
 	if (!GetWindowThreadProcessId(windowHandle, pid))
